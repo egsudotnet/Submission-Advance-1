@@ -6,13 +6,11 @@ Kanker merupakan salah satu penyakit yang memiliki dampak kesehatan dan finansia
 
 Menghisi ini, rumah sakit dan penyedia layanan kesehatan memerlukan solusi yang dapat memprediksi biaya layanan kanker secara lebih akurat. Prediksi biaya yang tepat membantu penyedia layanan mengelola anggaran lebih baik dan memberikan estimasi biaya yang transparan bagi pasien. Teknologi kecerdasan buatan (AI) dan *machine learning* telah terbukti efektif dalam memproses data besar dan kompleks, menjadikannya alat yang potensial dalam mengembangkan model prediksi biaya layanan kesehatan, khususnya untuk terapi kanker .
 
-
 Alasanan Masalah ???
 
 Penyelesaian masalah ini penting karena prediksi yang tepat dapat mengurangi ketidakpastian biaya bagi pasien dan keluarganya serta memungkinkan perencanaan anggaran yang lebih efisien bagi rumah sakit. Model prediksi berbasis AI ini dapat memberikan estimasi yang lebih akurat dengan mempertimbangkan data spesifik pasien, seperti jenis kanker, stadium, serta metode terapi yang digunakan. Hal ini akan mengurangi risiko overestimasi atau underestimasi biaya yang dapat berdampak pada pengelolaan sumber daya di rumah sakit dan kemampuan pasien untuk merencanakan keuangan mereka .
 
 Riset Terkait
-
 
 Penelitian seenunjukkan bahwa algoritma seperti regresi linear,  *random forest* , dan *gradient boosting* efektif dalam memprediksi biaya layanan kesehatan. Misalnya, studi yang dilakukan oleh perusahaan riset McKinsey & Company menunjukkan bahwa pemanfaatan data historis dengan teknik *machine learning* dapat memperbaiki akurasi prediksi hingga 20-30%, terutama dalam konteks layanan kesehatan dengan variabilitas biaya yang tinggi seperti terapi kanker【6†source】. Riset lain dari jurnal medis BMC [GitHub](https://github.com/ilhamAdhim/machine-learning-terapan-dicoding/blob/main/Submission_1_MLT.ipynb)
 
@@ -21,7 +19,6 @@ vices Research mendukung penggunaan data klinis dan algoritma prediksi untuk mem
 - Format Referensi: [Judul Referensi](https://scholar.google.com/)  XXX
 
 ## Business Understanding
-
 
 ### Problem Statements
 
@@ -45,15 +42,25 @@ Tujuan utama dari proyek ini adalah:
 
 ## Data Understanding
 
-Paragraf awal bagian ini menjelaskan informasi mengenai data yang Anda gunakan dalam proyek. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
+Data yang digunakan dalam proyek ini berasal dari kaggle dan bisa diunduh di [sini](https://www.kaggle.com/datasets/rishidamarla/costs-for-cancer-treatment "https://www.kaggle.com/datasets/rishidamarla/costs-for-cancer-treatment")
 
-Selanjutnya uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:
+Dataset memiliki1255 baris data dan memiliki beberapa fitur penting terkait biaya dan kejadian penyakit kanker. Dataset ini terdiri dari beberapa fitur utama yang memberikan informasi terkait biaya perawatan tahunan dan beberapa asumsi dasar dalam menangani pasien kanker.
 
 ### Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
 
-- accepts : merupakan jenis pembayaran yang diterima pada restoran tertentu.
-- cuisine : merupakan jenis masakan yang disajikan pada restoran.
-- dst
+Berikut ini adalah penjelasan dari setiap fitur dalam dataset:
+
+* **Cancer Site** : Jenis atau lokasi kanker yang diderita pasien. Faktor ini penting karena berbagai jenis kanker memiliki tingkat kejadian dan biaya perawatan yang berbeda.
+* **Year** : Tahun ketika data dikumpulkan atau dianalisis. Fitur ini membantu melihat tren tahunan dalam biaya dan kejadian penyakit.
+* **Sex** : Jenis kelamin pasien (pria atau wanita), yang dapat mempengaruhi statistik kejadian kanker dan biaya pengobatan.
+* **Age** : Usia pasien. Usia sering kali berkaitan dengan risiko dan jenis kanker tertentu serta memengaruhi kebutuhan biaya perawatan.
+* **Incidence and Survival Assumptions** : Asumsi terkait kejadian kanker dan tingkat kelangsungan hidup, yang dapat membantu memperkirakan jumlah pasien dan kemungkinan biaya pengobatan dalam periode tertentu.
+* **Annual Cost Increase (applied to initial and last phases)** : Peningkatan biaya tahunan yang diterapkan pada fase awal dan akhir perawatan. Biaya perawatan kanker sering meningkat dari tahun ke tahun, dan fitur ini memungkinkan kita memahami peningkatan biaya selama masa perawatan pasien.
+* **Total Costs** : Total biaya perawatan yang dikeluarkan untuk pasien kanker. Fitur ini menjadi variabel target dalam memprediksi biaya perawatan.
+* **Initial Year After Diagnosis Cost** : Biaya perawatan pada tahun pertama setelah diagnosis. Ini mencakup biaya besar yang biasanya terjadi pada awal pengobatan.
+* **Continuing Phase Cost** : Biaya pada fase lanjutan, yaitu biaya perawatan rutin yang dikeluarkan setelah fase awal dan sebelum fase akhir perawatan.
+
+
 
 **Rubrik/Kriteria Tambahan (Opsional)**:
 
