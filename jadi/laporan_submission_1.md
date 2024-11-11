@@ -24,7 +24,6 @@ Berdasarkan maslah di atas maka proyek ini mempunyai tujuan yaitu:
 
 * Menegetahui cara memperedikisi biaya perawatan pasien kanker di rumah sakit.
 
-
 ### Solution statements
 
 1. Melakukan proses Exploratory Data Analysis (EDA)
@@ -203,7 +202,6 @@ Secara keseluruhan, **Random Forest** dipilih karena mampu memenuhi kebutuhan an
 
 **Hasil Evaluasi Model:**
 
-
 Evaluasi model machine learning (ML) menggunakan metrik seperti **MSE (Mean Squared Error)**, **RMSE (Root Mean Squared Error)**, dan **R² (Koefisien Determinasi)** penting karena:
 
 1. **MSE** mengukur rata-rata kuadrat perbedaan antara prediksi model dan nilai sebenarnya. Ini memberi penalti yang lebih besar pada kesalahan besar, sehingga model yang memiliki kesalahan besar akan terdeteksi lebih jelas.
@@ -216,7 +214,6 @@ Kombinasi ketiga metrik ini memberikan gambaran menyeluruh tentang performa mode
 | ----------------------- | ------------- | --------- | ------- |
 | Random Forest (default) | 469.475,09604 | 685,18253 | 0,99923 |
 | Linear Regression       | 0,00345       | 0,05876   | 1,00000 |
-
 
 Dari hasil evaluasi tersebut, model **Linear Regression** dan **Random Forest** keduanya menunjukkan performa yang sangat tinggi. Namun, jika dilihat dari evaluasi pada set pengujian:
 
@@ -234,10 +231,3 @@ Dari hasil evaluasi tersebut, model **Linear Regression** dan **Random Forest** 
 * **Random Forest** memiliki performa yang lebih realistis dalam hal error, tetapi tetap dengan R² yang sangat tinggi. Model ini lebih cocok jika data Anda memiliki kompleksitas tambahan atau hubungan non-linear antar fitur. Meskipun MSE dan RMSE-nya lebih tinggi, model ini dapat menangkap pola yang lebih rumit.
 
 Berdasarkan MSE dan RMSE yang jauh lebih rendah pada Linear Regression, **Linear Regression adalah model yang lebih efektif untuk memprediksi biaya pengobatan** pasien kanker dalam dataset ini. Model ini lebih akurat dalam memprediksi hasil dengan kesalahan yang sangat minimal, membuatnya lebih sesuai untuk aplikasi praktis dalam perencanaan anggaran dan estimasi biaya.
-
-# Inferensi
-
-Uji presiksi untuk kasus kanker serviks pada pasien perempuan di tahun 2024
-
-Hasil Prediksi Total Biaya Perawatan:
-Total Costs (predicted): 21,411.08
