@@ -8,31 +8,47 @@ Rumah sakit dan penyedia layanan kesehatan memerlukan solusi yang dapat mempredi
 
 ## Business Understanding
 
-### Problem Statements
-
 Biaya perawatan kanker yang tinggi dan variatif merupakan tantangan besar, baik bagi pasien maupun penyedia layanan kesehatan. Banyak faktor, seperti jenis terapi, stadium kanker, dan kondisi kesehatan pasien, mempengaruhi besaran biaya tersebut. Ketidakmampuan memprediksi biaya dengan akurat sering kali mengakibatkan ketidakstabilan keuangan bagi pasien dan keluarga serta kesulitan pengelolaan anggaran di rumah sakit. Di sisi penyedia layanan, estimasi yang kurang tepat dapat mengganggu alokasi sumber daya yang optimal, menyebabkan masalah ketersediaan layanan di masa mendatang.
 
 Oleh karena itu, diperlukan model prediksi biaya yang mampu memberikan estimasi yang akurat untuk membantu manajemen rumah sakit dalam merencanakan kebutuhan anggaran dan membantu pasien dalam merencanakan biaya perawatan.
 
+### Problem Statements
+
+Dari penjelasan diaatas maka dapat disimpulkan bahwa permasalahan yang ada saat ini adalah:
+
+* Bagaimana cara memperedikisi biaya pengobatan pasien kanker di rumah sakit?
+
 ### Goals
 
-Tujuan utama dari proyek ini adalah:
+Berdasarkan maslah di atas maka proyek ini mempunyai tujuan yaitu:
 
-1. Membangun model prediksi berbasis *machine learning* yang dapat mengestimasi biaya terapi kanker dengan akurasi tinggi, dengan mempertimbangkan data spesifik pasien, termasuk jenis kanker, stadium, pilihan terapi, dan kondisi lainnya.
-2. Memberikan analisis faktor-faktor yang mempengaruhi besarnya biaya perawatan kanker, yang akan berguna bagi rumah sakit dalam menyusun kebijakan biaya dan alokasi sumber daya.
-3. Mengurangi ketidakpastian biaya bagi pasien dan keluarganya dengan menyediakan informasi estimasi biaya yang lebih transpara
+* Menegetahui cara memperedikisi biaya perawatan pasien kanker di rumah sakit.
+
 
 ### Solution statements
 
-* Menerapkan beberapa algoritma *machine learning* seperti  *linear regression* ,  *random forest* , dan *gradient boosting* untuk mengembangkan model prediksi. Setiap algoritma memiliki karakteristik yang berbeda, dan dengan mencoba beberapa algoritma ini, diharapkan dapat ditemukan model dengan kinerja terbaik dalam memprediksi biaya layanan kanker. Setiap model akan dievaluasi menggunakan metrik *Mean Absolute Error* (MAE) dan *Root Mean Squared Error* (RMSE) untuk mengukur akurasinya. MAE memberikan gambaran seberapa besar rata-rata kesalahan prediksi, sementara RMSE lebih sensitif terhadap kesalahan besar, sehingga memungkinkan penilaian yang lebih detail terhadap performa model.
-* Menggunakan teknik *hyperparameter tuning* untuk meningkatkan kinerja model. Misalnya, pada model  *random forest* , parameter seperti jumlah *trees* dan kedalaman *tree* dapat disesuaikan untuk mencapai akurasi yang lebih tinggi. Teknik *Grid Search* atau *Random Search* dapat digunakan untuk menemukan kombinasi parameter yang optimal. Hasil dari tuning ini akan dibandingkan dengan baseline model untuk memastikan bahwa tuning parameter memberikan peningkatan yang signifikan dalam performa model. Metrik evaluasi yang digunakan akan tetap sama, yaitu MAE dan RMSE, untuk memastikan konsistensi perbandingan performa antara model yang dituning dan baseline.
-* Selain model prediksi, mengembangkan dashboard interaktif yang menampilkan estimasi biaya serta faktor-faktor yang paling mempengaruhi biaya terapi. Dashboard ini akan membantu tim manajemen rumah sakit dalam menganalisis pola biaya dan mengidentifikasi faktor utama yang meningkatkan biaya perawatan. Alat visualisasi ini juga bisa berguna bagi pasien dan keluarga mereka untuk memahami faktor yang mempengaruhi estimasi biaya, yang akan meningkatkan transparansi dan membantu dalam perencanaan finansial.
+1. Melakukan proses Exploratory Data Analysis (EDA)
+2. Membuat model machine learning dengan beberaa model, yaitu:
+   * Random forest
+   * Liner regression
 
 ## Data Understanding
 
 Data yang digunakan dalam proyek ini berasal dari kaggle dan bisa diunduh di [sini](https://www.kaggle.com/datasets/rishidamarla/costs-for-cancer-treatment "https://www.kaggle.com/datasets/rishidamarla/costs-for-cancer-treatment")
 
 Dataset memiliki 1255 baris data dan memiliki beberapa fitur penting terkait biaya dan kejadian penyakit kanker. Dataset ini terdiri dari beberapa fitur utama yang memberikan informasi terkait biaya perawatan tahunan dan beberapa asumsi dasar dalam menangani pasien kanker.
+
+### **Sample data**
+
+| Cancer Site | Year | Sex        | Age      | Incidence and Survival Assumptions                | Annual Cost Increase (applied to initial and last phases) | Total Costs | Initial Year After Diagnosis Cost | Continuing Phase Cost | Last Year of Life Cost |
+| ----------- | ---- | ---------- | -------- | ------------------------------------------------- | --------------------------------------------------------- | ----------- | --------------------------------- | --------------------- | ---------------------- |
+| AllSites    | 2010 | Both sexes | All ages | Incidence, Survival at constant rate              | 0%                                                        | 124565.6    | 40463.5                           | 46642.8               | 37459.2                |
+| AllSites    | 2010 | Both sexes | All ages | Incidence follows recent trend, Survival constant | 0%                                                        | 122420.8    | 38552.7                           | 46671.9               | 37196.3                |
+| AllSites    | 2010 | Both sexes | All ages | Survival follows recent trend, Incidence constant | 0%                                                        | 125397.7    | 40463.5                           | 47136.3               | 37797.9                |
+| AllSites    | 2010 | Both sexes | All ages | Incidence, Survival follow recent trends          | 0%                                                        | 123236.3    | 38552.7                           | 47155.7               | 37527.8                |
+| AllSites    | 2010 | Both sexes | All ages | Incidence, Survival follow recent trends          | 2%                                                        | 123236.3    | 38552.7                           | 47155.7               | 37527.8                |
+| AllSites    | 2010 | Both sexes | All ages | Incidence, Survival follow recent trends          | 5%                                                        | 123236.3    | 38552.7                           | 47155.7               | 37527.8                |
+| Bladder     | 2010 | Both sexes | All ages | Incidence, Survival at constant rate              | 0%                                                        | 3980.7      | 978.7                             | 1895.8                | 1106.3                 |
 
 ### Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
 
@@ -48,19 +64,58 @@ Berikut ini adalah penjelasan dari setiap fitur dalam dataset:
 * **Initial Year After Diagnosis Cost** : Biaya perawatan pada tahun pertama setelah diagnosis. Ini mencakup biaya besar yang biasanya terjadi pada awal pengobatan.
 * **Continuing Phase Cost** : Biaya pada fase lanjutan, yaitu biaya perawatan rutin yang dikeluarkan setelah fase awal dan sebelum fase akhir perawatan.
 
-#### EDA
+### Missing Values
 
-* Distribusi kasus "Cancer Site", diagram menunjukan jumlah kasus sama masning 66 kasus.
+Data yang hilang dapat menyebabkan bias dalam analisis dan memengaruhi hasil secara signifikan. Mengidentifikasi kolom atau baris yang memiliki nilai hilang memungkinkan kita untuk memutuskan langkah terbaik, seperti mengisi data yang hilang atau menghapus baris atau kolom yang tidak lengkap.
+
+```
+print("Pemeriksaan Missing Values:")
+print(data.isnull().sum())
+```
+
+Dari hasil pemeriksaan **tidak terdapat missing value** untuk keseluruhan data
+
+| Kolom                                                     | Missing Value |
+| --------------------------------------------------------- | ------------- |
+| Cancer Site                                               | 0             |
+| Year                                                      | 0             |
+| Sex                                                       | 0             |
+| Age                                                       | 0             |
+| Incidence and Survival Assumptions                        | 0             |
+| Annual Cost Increase (applied to initial and last phases) | 0             |
+| Total Costs                                               | 0             |
+| Initial Year After Diagnosis Cost                         | 0             |
+| Continuing Phase Cost                                     | 0             |
+| Last Year of Life Cost                                    | 0             |
+
+### Duplicate Data
+
+Data duplikat adalah entri yang sama yang muncul lebih dari sekali dalam dataset. Keberadaan duplikat dapat mengubah hasil analisis dengan cara yang tidak akurat. Dengan menghapus duplikat, kita memastikan bahwa data yang dianalisis benar-benar mewakili situasi sebenarnya tanpa kelebihan representasi.
+
+```
+print("\nPemeriksaan Duplikat:")
+print(f"Jumlah baris duplikat: {data.duplicated().sum()}")
+```
+
+Dari hasil pemriksaan tersebut **tidak ditemukan adanya duplicate Data**
+
+### EDA
+
+* Distribusi kasus "Cancer Site"
 
 ![1731147190012](image/laporan_submission_1/1731147190012.png)
 
-* Total Costs per "Cancer Site", diagram menunjukan biaya terbesar secara berurut yaitu all sites, other , breast, colorectal, lymphoma
+diagram menunjukan jumlah kasus sama masning 66 kasus.
 
-![1731147100181](image/laporan_submission_1/1731147100181.png)
+* Total Costs per "Cancer Site"
 
-* Total Costs berdasarkan Cancer Site dan Sex, diagram menunjukan yang paling banyak untuk wanita yaitu breast dan yang paling banyak untuk pria yaitu prostat.
+![1731147100181](image/laporan_submission_1/1731147100181.png)diagram menunjukan biaya terbesar secara berurut yaitu all sites, other , breast, colorectal, lymphoma
+
+* Total Costs berdasarkan Cancer Site dan Sex
 
 ![1731147263523](image/laporan_submission_1/1731147263523.png)
+
+diagram menunjukan yang paling banyak untuk wanita yaitu breast dan yang paling banyak untuk pria yaitu prostat.
 
 ## Data Preparation
 
@@ -148,17 +203,20 @@ Secara keseluruhan, **Random Forest** dipilih karena mampu memenuhi kebutuhan an
 
 **Hasil Evaluasi Model:**
 
-![1731206322214](image/laporan_submission_1/1731206322214.png)![1731206330895](image/laporan_submission_1/1731206330895.png)
 
-Model Linear Regression - Evaluasi Set Pengujian
-MSE: 0.00
-RMSE: 0.06
-R²: 1.00
+Evaluasi model machine learning (ML) menggunakan metrik seperti **MSE (Mean Squared Error)**, **RMSE (Root Mean Squared Error)**, dan **R² (Koefisien Determinasi)** penting karena:
 
-Model Random Forest - Evaluasi Set Pengujian
-MSE: 469475.10
-RMSE: 685.18
-R²: 1.00
+1. **MSE** mengukur rata-rata kuadrat perbedaan antara prediksi model dan nilai sebenarnya. Ini memberi penalti yang lebih besar pada kesalahan besar, sehingga model yang memiliki kesalahan besar akan terdeteksi lebih jelas.
+2. **RMSE** adalah akar kuadrat dari MSE, sehingga nilainya berada dalam satuan yang sama dengan data asli. Ini membantu dalam menginterpretasi seberapa besar kesalahan prediksi dalam konteks data yang diukur.
+3. **R²** mengukur seberapa baik model dalam menjelaskan variabilitas data. Nilai mendekati 1 menunjukkan model yang sangat baik, sementara nilai mendekati 0 menunjukkan model yang tidak lebih baik dari model sederhana.
+
+Kombinasi ketiga metrik ini memberikan gambaran menyeluruh tentang performa model, baik dalam hal akurasi prediksi (MSE, RMSE) dan kemampuan model untuk menjelaskan data (R²).
+
+| Model                   | MSE           | RMSE      | R2      |
+| ----------------------- | ------------- | --------- | ------- |
+| Random Forest (default) | 469.475,09604 | 685,18253 | 0,99923 |
+| Linear Regression       | 0,00345       | 0,05876   | 1,00000 |
+
 
 Dari hasil evaluasi tersebut, model **Linear Regression** dan **Random Forest** keduanya menunjukkan performa yang sangat tinggi. Namun, jika dilihat dari evaluasi pada set pengujian:
 
@@ -175,7 +233,7 @@ Dari hasil evaluasi tersebut, model **Linear Regression** dan **Random Forest** 
 * **Linear Regression** memiliki performa yang luar biasa dengan error yang hampir nol pada set pengujian. Jika Anda yakin bahwa data Anda benar-benar linier dan tidak terlalu kompleks, model ini adalah pilihan yang tepat. Namun, hasil yang terlalu sempurna (R² = 1.00) bisa mengindikasikan bahwa model mungkin overfitting pada data pelatihan, jadi penting untuk memverifikasi performanya pada data baru atau menggunakan validasi silang.
 * **Random Forest** memiliki performa yang lebih realistis dalam hal error, tetapi tetap dengan R² yang sangat tinggi. Model ini lebih cocok jika data Anda memiliki kompleksitas tambahan atau hubungan non-linear antar fitur. Meskipun MSE dan RMSE-nya lebih tinggi, model ini dapat menangkap pola yang lebih rumit.
 
-Dari hasil evaluasi dan perbandingan, **Random Forest** dengan hyperparameter tuning menghasilkan kinerja yang lebih baik dan lebih stabil dibandingkan Linear Regression. **Random Forest (tuned)** menjadi model yang dipilih karena memiliki keseimbangan terbaik antara akurasi dan kemampuan generalisasi, serta mengurangi risiko overfitting yang terlihat pada model Linear Regression.
+Berdasarkan MSE dan RMSE yang jauh lebih rendah pada Linear Regression, **Linear Regression adalah model yang lebih efektif untuk memprediksi biaya pengobatan** pasien kanker dalam dataset ini. Model ini lebih akurat dalam memprediksi hasil dengan kesalahan yang sangat minimal, membuatnya lebih sesuai untuk aplikasi praktis dalam perencanaan anggaran dan estimasi biaya.
 
 # Inferensi
 

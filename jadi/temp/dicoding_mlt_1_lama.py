@@ -62,16 +62,6 @@ print(data.head())
 print("Tipe Data dan Nilai Null:\n", data.info())
 print("Statistik Ringkas:\n", data.describe())
 
-"""###Memeriksa Missing Values"""
-
-print("Pemeriksaan Missing Values:")
-print(data.isnull().sum())
-
-"""###Memeriksa Duplicate Data"""
-
-print("\nPemeriksaan Duplikat:")
-print(f"Jumlah baris duplikat: {data.duplicated().sum()}")
-
 """###Plot diagram batang untuk 'Cancer Site'"""
 
 plt.figure(figsize=(12, 6))
@@ -176,6 +166,37 @@ r2_rf = r2_score(y_test, y_pred_rf)
 
 hasil_model = pd.concat([hasil_model, pd.DataFrame({'Model': ['Random Forest (default)'], 'MSE': [mse_rf], 'RMSE': [rmse_rf], 'R2': [r2_rf]})], ignore_index=True)
 
+"""###Hyperparameter Tuning yang lebih cepat untuk Random Forest"""
+
+param_grid_quick = {
+    'n_estimators': [100, 150],  # Mengurangi jumlah opsi untuk n_estimators
+    'max_depth': [10, 20, None],  # Membatasi kedalaman pohon
+    'min_samples_split': [2, 5],  # Mengurangi jumlah opsi untuk pembagian
+    'min_samples_leaf': [1, 2]    # Mengurangi jumlah opsi untuk jumlah sampel minimum di daun
+}
+grid_search_rf_quick = GridSearchCV(
+    estimator=RandomForestRegressor(random_state=42),
+    param_grid=param_grid_quick,
+    cv=2,  # Mengurangi jumlah lipatan untuk mempercepat
+    scoring='neg_mean_squared_error',
+    verbose=1,  # Mengurangi level verbosity
+    n_jobs=-1
+)
+grid_search_rf_quick.fit(X_train, y_train)
+
+"""###Model terbaik setelah tuning cepat"""
+
+best_rf_model_quick = grid_search_rf_quick.best_estimator_
+y_pred_rf_quick = best_rf_model_quick.predict(X_test)
+mse_rf_quick = mean_squared_error(y_test, y_pred_rf_quick)
+rmse_rf_quick = np.sqrt(mse_rf_quick)
+r2_rf_quick = r2_score(y_test, y_pred_rf_quick)
+
+print("Hasil Hyperparameter Tuning Cepat untuk Random Forest:")
+print(f"MSE: {mse_rf_quick:.2f}")
+print(f"RMSE: {rmse_rf_quick:.2f}")
+print(f"R²: {r2_rf_quick:.2f}")
+
 """## Linear Regression"""
 
 lr_model = LinearRegression()
@@ -232,3 +253,52 @@ print("Model Random Forest - Evaluasi Set Pengujian")
 print(f"MSE: {mse_rf_test:.2f}")
 print(f"RMSE: {rmse_rf_test:.2f}")
 print(f"R²: {r2_rf_test:.2f}")
+
+"""# Inferensi
+
+###Membuat data prediksi sesuai dengan kolom fitur yang ada pada data pelatihan
+"""
+
+data_prediksi = pd.DataFrame({
+    'Year': [2024],  # Tahun saat prediksi
+    'Annual Cost Increase (applied to initial and last phases)': [0.02],  # Angka kenaikan biaya tahunan
+    'Initial Year After Diagnosis Cost': [10000],  # Biaya untuk tahun pertama setelah diagnosis
+    'Continuing Phase Cost': [5000],  # Biaya untuk fase lanjutan
+    'Last Year of Life Cost': [20000],  # Biaya pada tahun terakhir hidup
+    'Cancer Site_Bladder': [0],
+    'Cancer Site_Brain': [0],
+    'Cancer Site_Breast': [0],
+    'Cancer Site_Cervix': [1],  # Kanker serviks
+    'Cancer Site_Colorectal': [0],
+    'Cancer Site_Esophagus': [0],
+    'Cancer Site_Head_Neck': [0],
+    'Cancer Site_Kidney': [0],
+    'Cancer Site_Leukemia': [0],
+    'Cancer Site_Lung': [0],
+    'Cancer Site_Lymphoma': [0],
+    'Cancer Site_Melanoma': [0],
+    'Cancer Site_Other': [0],
+    'Cancer Site_Ovary': [0],
+    'Cancer Site_Pancreas': [0],
+    'Cancer Site_Prostate': [0],
+    'Cancer Site_Stomach': [0],
+    'Cancer Site_Uterus': [0],
+    'Sex_Females': [1],  # Pasien perempuan
+    'Sex_Males': [0],
+    'Incidence and Survival Assumptions_Incidence, Survival at constant rate': [0],
+    'Incidence and Survival Assumptions_Incidence, Survival follow recent trends': [0],
+    'Incidence and Survival Assumptions_Survival follows recent trend, Incidence constant': [1],
+})
+
+"""###Standarisasi data prediksi menggunakan scaler yang sudah dilatih"""
+
+data_prediksi_scaled = scaler.transform(data_prediksi)
+
+"""###Menggunakan model Random Forest terbaik untuk prediksi"""
+
+prediksi_total_cost = best_rf_model_quick.predict(data_prediksi_scaled)
+
+"""###Menampilkan hasil prediksi"""
+
+print("Hasil Prediksi Total Biaya Perawatan:")
+print(f"Total Costs (predicted): {prediksi_total_cost[0]:,.2f}")
