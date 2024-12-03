@@ -33,11 +33,23 @@ Berdasarkan maslah di atas maka proyek ini mempunyai tujuan yaitu:
 
 ## Data Understanding
 
-Data yang digunakan dalam proyek ini berasal dari kaggle dan bisa diunduh di [sini](https://www.kaggle.com/datasets/rishidamarla/costs-for-cancer-treatment "https://www.kaggle.com/datasets/rishidamarla/costs-for-cancer-treatment")
+Data yang digunakan dalam proyek ini berasal dari kaggle, dengan keterangan sebagai berikut:
 
-Dataset memiliki 1255 baris data dan memiliki beberapa fitur penting terkait biaya dan kejadian penyakit kanker. Dataset ini terdiri dari beberapa fitur utama yang memberikan informasi terkait biaya perawatan tahunan dan beberapa asumsi dasar dalam menangani pasien kanker.
+* Jumlah data 1255 baris dan 9 kolom.
+* Kondisi data tidak ada missing value dan tidak ada duplicate value.
+* Tautan sumber data bisa diunduh di [https://www.kaggle.com/datasets/rishidamarla/costs-for-cancer-treatment](https://www.kaggle.com/datasets/rishidamarla/costs-for-cancer-treatment "https://www.kaggle.com/datasets/rishidamarla/costs-for-cancer-treatment")
 
-### **Sample data**
+
+**Muat dataset**
+
+Setelah mengambil dataset dari kaggle, kemudian dilakukan langkah berikut:
+
+1. Menyimpan nama atau path dari file CSV dengan nama fil 'DowloadableDataFull_2011.01.12.csv'.
+2. Membaca file CSV dengan pandas dan menyimpannya dalam data. Parameter skiprows=2 melewati dua baris pertama, sehingga data dimulai dari baris ketiga. Ini berguna jika file CSV berisi header tambahan atau keterangan di baris awal.
+3. Mengambil baris pertama data yang dimuat (setelah melewati dua baris awal) dan menggunakannya sebagai nama kolom. Ini dilakukan agar nama kolom sesuai dengan data yang dimuat.
+4. Menghapus baris pertama data (yang sekarang menjadi nama kolom) dari dataset, sehingga data hanya berisi data aktual tanpa pengulangan header.
+
+**Sample data**
 
 | Cancer Site | Year | Sex        | Age      | Incidence and Survival Assumptions                | Annual Cost Increase (applied to initial and last phases) | Total Costs | Initial Year After Diagnosis Cost | Continuing Phase Cost | Last Year of Life Cost |
 | ----------- | ---- | ---------- | -------- | ------------------------------------------------- | --------------------------------------------------------- | ----------- | --------------------------------- | --------------------- | ---------------------- |
@@ -49,7 +61,7 @@ Dataset memiliki 1255 baris data dan memiliki beberapa fitur penting terkait bia
 | AllSites    | 2010 | Both sexes | All ages | Incidence, Survival follow recent trends          | 5%                                                        | 123236.3    | 38552.7                           | 47155.7               | 37527.8                |
 | Bladder     | 2010 | Both sexes | All ages | Incidence, Survival at constant rate              | 0%                                                        | 3980.7      | 978.7                             | 1895.8                | 1106.3                 |
 
-### Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
+**Variabel-variabel pada dataset adalah sebagai berikut:**
 
 Berikut ini adalah penjelasan dari setiap fitur dalam dataset:
 
@@ -63,14 +75,9 @@ Berikut ini adalah penjelasan dari setiap fitur dalam dataset:
 * **Initial Year After Diagnosis Cost** : Biaya perawatan pada tahun pertama setelah diagnosis. Ini mencakup biaya besar yang biasanya terjadi pada awal pengobatan.
 * **Continuing Phase Cost** : Biaya pada fase lanjutan, yaitu biaya perawatan rutin yang dikeluarkan setelah fase awal dan sebelum fase akhir perawatan.
 
-### Missing Values
+**Missing Values**
 
 Data yang hilang dapat menyebabkan bias dalam analisis dan memengaruhi hasil secara signifikan. Mengidentifikasi kolom atau baris yang memiliki nilai hilang memungkinkan kita untuk memutuskan langkah terbaik, seperti mengisi data yang hilang atau menghapus baris atau kolom yang tidak lengkap.
-
-```
-print("Pemeriksaan Missing Values:")
-print(data.isnull().sum())
-```
 
 Dari hasil pemeriksaan **tidak terdapat missing value** untuk keseluruhan data
 
@@ -87,14 +94,9 @@ Dari hasil pemeriksaan **tidak terdapat missing value** untuk keseluruhan data
 | Continuing Phase Cost                                     | 0             |
 | Last Year of Life Cost                                    | 0             |
 
-### Duplicate Data
+**Duplicate Data**
 
 Data duplikat adalah entri yang sama yang muncul lebih dari sekali dalam dataset. Keberadaan duplikat dapat mengubah hasil analisis dengan cara yang tidak akurat. Dengan menghapus duplikat, kita memastikan bahwa data yang dianalisis benar-benar mewakili situasi sebenarnya tanpa kelebihan representasi.
-
-```
-print("\nPemeriksaan Duplikat:")
-print(f"Jumlah baris duplikat: {data.duplicated().sum()}")
-```
 
 Dari hasil pemriksaan tersebut **tidak ditemukan adanya duplicate Data**
 
@@ -120,23 +122,11 @@ diagram menunjukan yang paling banyak untuk wanita yaitu breast dan yang paling 
 
 * **Menghapus simbol '%' pada kolom 'Annual Cost Increase' dan mengonversinya menjadi float**
 
-```
-data['Annual Cost Increase (applied to initial and last phases)'] = (
-    data['Annual Cost Increase (applied to initial and last phases)']
-    .replace('%', '', regex=True)
-    .astype(float) / 100
-)
-```
-
 Penjelasan: Proses ini dilakukan untuk membersihkan dan mengonversi data dari format string ke format numerik (float). Simbol '%' dihapus agar kolom tersebut dapat dikonversi menjadi nilai float dan diubah menjadi bentuk desimal dengan membagi 100.
 
 Alasan Diperlukan: Tahap ini sangat penting untuk memastikan bahwa data dalam kolom ini dapat diolah dengan benar oleh model machine learning. Model hanya dapat menerima data numerik untuk melakukan perhitungan, sehingga data yang awalnya berbentuk string dengan simbol seperti '%' perlu dibersihkan dan diubah menjadi tipe data numerik.
 
 * **One-Hot Encoding untuk kolom kategorikal**
-
-```
-data_encoded = pd.get_dummies(data, columns=['Cancer Site','Sex','Age','Incidence and Survival Assumptions'], drop_first=True)
-```
 
 Penjelasan: One-Hot Encoding digunakan untuk mengubah data kategorikal menjadi format numerik dengan cara membuat kolom biner (0 dan 1) untuk setiap kategori yang ada.
 
@@ -144,19 +134,11 @@ Alasan Diperlukan: Machine learning model seperti regresi linier, SVM, atau algo
 
 * **Menentukan fitur dan target**
 
-```
-fitur = data_encoded.drop(columns=['Total Costs'])  # Gantilah dengan nama kolom target jika berbedatarget = data_encoded['Total Costs']
-```
-
 Penjelasan: Proses ini memisahkan variabel independen (fitur) dari variabel dependen (target) yang akan diprediksi.
 
 Alasan Diperlukan: Pemilihan fitur dan target adalah langkah esensial dalam membangun model machine learning. Memisahkan fitur dari target memungkinkan model mempelajari pola dalam data untuk membuat prediksi yang akurat.
 
 * **Pisahkan data menjadi set pelatihan dan pengujian**
-
-```
-X_train, X_test, y_train, y_test = train_test_split(fitur, target, test_size=0.2, random_state=42)
-```
 
 Jumlah sampel pelatihan: 1003
 Jumlah sampel pengujian: 251
@@ -167,34 +149,38 @@ Alasan Diperlukan: Memisahkan data menjadi set pelatihan dan pengujian penting u
 
 * **Standarisasi fitur**
 
-```
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
-```
-
 Penjelasan: Standarisasi dilakukan untuk menyelaraskan skala fitur-fitur dalam dataset agar memiliki distribusi yang sama (mean 0 dan standar deviasi 1).
 
 Alasan Diperlukan: Standarisasi membantu model machine learning seperti algoritma yang berbasis gradien (contohnya: regresi linier, SVM, jaringan saraf) agar lebih stabil dan cepat dalam proses training. Skala yang tidak selaras antara fitur-fitur dapat mengakibatkan model kesulitan dalam mempelajari hubungan dalam data.
 
 ## Modeling
 
-Pada proyek ini menggunakan model random forest dan liner regression
+Pada proyek ini menggunakan model random forest dan liner regression.
 
-**Random Forest** :
+**1. Random Forest Regressor**
 
-* **Kelebihan** : Mampu menangani data kompleks dan hubungan non-linear dengan baik, robust terhadap overfitting berkat metode ensemble.
-* **Kekurangan** : Butuh sumber daya komputasi yang lebih besar dan sulit diinterpretasikan dibandingkan model linier.
-* **Proses Improvement** : Dilakukan hyperparameter tuning dengan `GridSearchCV` untuk menemukan kombinasi parameter terbaik. Parameter yang di-tuning meliputi:
-  * `n_estimators`: Jumlah pohon dalam hutan.
-  * `max_depth`: Kedalaman maksimum setiap pohon.
-  * `min_samples_split`: Jumlah sampel minimum yang diperlukan untuk membagi node.
-  * `min_samples_leaf`: Jumlah sampel minimum di daun pohon.
+*Random Forest Regressor* adalah model pembelajaran mesin berbasis *ensemble* yang menggunakan mekanisme "hutan" dari beberapa *decision tree* untuk menghasilkan prediksi nilai numerik yang lebih akurat dan stabil. Setiap *decision tree* dalam *random forest* dilatih pada subset acak dari data, baik dalam hal fitur maupun sampel, dengan proses yang disebut *bootstrap aggregation* atau *bagging*. Saat melakukan prediksi, setiap *tree* menghasilkan hasil tersendiri, dan hasil akhir diambil sebagai rata-rata dari semua *tree* tersebut, yang membantu mengurangi *overfitting* dan meningkatkan generalisasi model.
 
-**Linear Regression** :
+Pada contoh kode ini, digunakan fungsi `RandomForestRegressor()` dengan parameter `random_state=42`, yang berfungsi untuk memastikan hasil yang konsisten setiap kali model dijalankan. Parameter default lainnya yang digunakan adalah:
 
-* **Kelebihan** : Mudah diinterpretasikan dan efisien secara komputasi, cocok untuk data dengan hubungan linier.
-* **Kekurangan** : Tidak cocok untuk data dengan hubungan non-linear dan rentan terhadap overfitting jika data memiliki fitur multikolinearitas.
+- `n_estimators=100`: Jumlah *decision tree* dalam hutan, yang secara default adalah 100. Semakin banyak pohon, semakin stabil prediksi, namun waktu komputasi juga meningkat.
+- `criterion='squared_error'`: Metrik untuk mengukur kualitas pemisahan, di mana *mean squared error* digunakan untuk regresi.
+- `max_depth=None`: Kedalaman maksimum dari setiap pohon. Tanpa batasan, pohon akan tumbuh hingga semua daun murni, yang bisa menyebabkan *overfitting*.
+- `min_samples_split=2` dan `min_samples_leaf=1`: Menentukan batasan minimal sampel untuk pembagian *node* dan daun untuk mengontrol ukuran pohon dan mencegah *overfitting*.
+
+Kelebihan : Mampu menangani data kompleks dan hubungan non-linear dengan baik, robust terhadap overfitting berkat metode ensemble.
+
+Kekurangan : Butuh sumber daya komputasi yang lebih besar dan sulit diinterpretasikan dibandingkan model linier.
+
+**2. Linear Regression**
+
+*Linear Regression* adalah model yang sederhana dan umum digunakan dalam regresi yang bertujuan memprediksi nilai numerik berdasarkan hubungan linier antara variabel dependen (target) dan variabel independen (fitur). Model ini bekerja dengan mencari garis regresi terbaik yang meminimalkan kesalahan antara prediksi dan nilai aktual. Algoritma *ordinary least squares* (OLS) digunakan untuk menyesuaikan bobot atau koefisien pada setiap fitur sehingga mengoptimalkan hasil prediksi.
+
+Pada contoh kode ini, fungsi `LinearRegression()` digunakan dengan parameter default, yang menyederhanakan proses pembelajaran tanpa parameter tambahan.
+
+Kelebihan : Mudah diinterpretasikan dan efisien secara komputasi, cocok untuk data dengan hubungan linier.
+
+Kekurangan : Tidak cocok untuk data dengan hubungan non-linear dan rentan terhadap overfitting jika data memiliki fitur multikolinearitas.
 
 Secara keseluruhan, **Random Forest** dipilih karena mampu memenuhi kebutuhan analisis data yang lebih kompleks dan memiliki fleksibilitas yang lebih tinggi dibandingkan  **Linear Regression** , yang cenderung sederhana dan terbatas pada hubungan linier.
 

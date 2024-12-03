@@ -46,35 +46,19 @@ os.environ['KAGGLE_CONFIG_DIR'] = '/content'
 """
 
 url = 'DowloadableDataFull_2011.01.12.csv'
-
-"""Menyimpan nama atau path dari file CSV ke dalam variabel url."""
-
 data = pd.read_csv(url, skiprows=2)
-
-""" Membaca file CSV dengan pandas dan menyimpannya dalam data. Parameter skiprows=2 melewati dua baris pertama, sehingga data dimulai dari baris ketiga. Ini berguna jika file CSV berisi header tambahan atau keterangan di baris awal."""
-
 data.columns = data.iloc[0]
-
-"""Mengambil baris pertama data yang dimuat (setelah melewati dua baris awal) dan menggunakannya sebagai nama kolom. Ini dilakukan agar nama kolom sesuai dengan data yang dimuat."""
-
 data = data[1:]
 
-"""Menghapus baris pertama data (yang sekarang menjadi nama kolom) dari dataset, sehingga data hanya berisi data aktual tanpa pengulangan header.
+"""Memuat dataset, menghapus baris pertama yang mengandung header, dan menyesuaikan nama kolom.
 
 ### Ubah kolom menjadi numerik
 """
 
 data['Year'] = pd.to_numeric(data['Year'], errors='coerce')
-
-"""- Mengonversi kolom 'Year' ke dalam tipe numerik menggunakan pd.to_numeric().
-- Parameter errors='coerce' digunakan untuk menangani nilai yang tidak dapat diubah ke angka. Nilai-nilai tersebut akan diubah menjadi NaN (Not a Number), yang menandakan data tidak valid untuk keperluan numerik.
-"""
-
 data['Total Costs'] = pd.to_numeric(data['Total Costs'], errors='coerce')
 
-"""- Sama seperti sebelumnya, namun diterapkan pada kolom 'Total Costs'.
-- Kolom ini diubah ke tipe numerik agar dapat digunakan dalam operasi matematis seperti penjumlahan, rata-rata, atau analisis lainnya.
-"""
+"""Mengonversi kolom Year dan Total Costs menjadi tipe numerik untuk perhitungan."""
 
 print(data.head())
 
@@ -220,14 +204,14 @@ mse_rf = mean_squared_error(y_test, y_pred_rf)
 rmse_rf = np.sqrt(mse_rf)
 r2_rf = r2_score(y_test, y_pred_rf)
 
-"""Kode ini melatih model Random Forest Regressor dengan data pelatihan, kemudian menggunakan model tersebut untuk memprediksi target pada data uji.
+"""Kode ini melatih model Random Forest Regressor dengan data pelatihan, kemudian menggunakan model tersebut untuk memprediksi target pada data uji. Model ini diinisialisasi dengan parameter default, kecuali random_state=42 untuk hasil yang konsisten. Setelah memprediksi, kinerja model dievaluasi menggunakan tiga metrik utama: Mean Squared Error (MSE) untuk mengukur rata-rata kesalahan kuadrat antara prediksi dan nilai sebenarnya, Root Mean Squared Error (RMSE) untuk interpretasi kesalahan dalam skala yang sama dengan target, dan R² untuk menilai seberapa baik model menjelaskan variasi dalam data.
 
 ### Tambahkan hasil Random Forest dengan parameter default ke dalam hasil_model
 """
 
 hasil_model = pd.concat([hasil_model, pd.DataFrame({'Model': ['Random Forest (default)'], 'MSE': [mse_rf], 'RMSE': [rmse_rf], 'R2': [r2_rf]})], ignore_index=True)
 
-"""Kode ini menambahkan hasil evaluasi model Random Forest ke dalam DataFrame hasil_model untuk membandingkan kinerja berbagai model.
+"""Kode ini menambahkan hasil evaluasi model Random Forest ke dalam DataFrame hasil_model untuk membandingkan kinerja berbagai model. DataFrame baru dibuat dengan memasukkan nama model ("Random Forest (default)") beserta nilai evaluasi MSE, RMSE, dan R² yang telah dihitung sebelumnya. Kode pd.concat() digunakan untuk menggabungkan DataFrame ini dengan hasil_model, sehingga setiap model yang dievaluasi dapat dibandingkan dalam satu tabel. Parameter ignore_index=True memastikan bahwa indeks pada DataFrame hasil gabungan akan diurutkan ulang.
 
 ## Linear Regression
 """
@@ -239,14 +223,14 @@ mse_lr = mean_squared_error(y_test, y_pred_lr)
 rmse_lr = np.sqrt(mse_lr)
 r2_lr = r2_score(y_test, y_pred_lr)
 
-"""Kode ini melatih model Linear Regression pada data pelatihan untuk memprediksi biaya pengobatan pada data pengujian, kemudian menghitung metrik evaluasi: MSE, RMSE, dan R².
+"""Kode ini melatih model Linear Regression pada data pelatihan untuk memprediksi biaya pengobatan pada data pengujian, kemudian menghitung metrik evaluasi: MSE, RMSE, dan R². Mean Squared Error (MSE) dan Root Mean Squared Error (RMSE) mengukur rata-rata kesalahan prediksi dalam satuan kuadrat dan aslinya, sedangkan R² menunjukkan seberapa baik model menjelaskan variasi data. Hasilnya memberikan gambaran tentang keakuratan model Linear Regression dalam memprediksi biaya pengobatan.
 
 ### Tambahkan hasil Linear Regression ke dalam hasil_model
 """
 
 hasil_model = pd.concat([hasil_model, pd.DataFrame({'Model': ['Linear Regression'], 'MSE': [mse_lr], 'RMSE': [rmse_lr], 'R2': [r2_lr]})], ignore_index=True)
 
-"""Kode ini menambahkan hasil evaluasi model Linear Regression ke dalam DataFrame hasil_model untuk membandingkan kinerja model yang berbeda.
+"""Kode ini menambahkan hasil evaluasi model Linear Regression ke dalam DataFrame hasil_model untuk membandingkan kinerja model yang berbeda. Hasil evaluasi, yaitu Mean Squared Error (MSE), Root Mean Squared Error (RMSE), dan koefisien determinasi R², disimpan dalam DataFrame baru dan kemudian dikombinasikan (pd.concat) dengan hasil_model yang sudah ada. Dengan ignore_index=True, indeksnya diatur ulang sehingga setiap hasil ditampilkan dalam urutan yang bersih di hasil_model, yang mempermudah analisis komparatif antara model yang diuji.
 
 # Evaluasi Model
 
